@@ -4,22 +4,19 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "Landing",
-    component: () =>
-      import(/* webpackChunkName: "landing" */ "../views/LandingView.vue"),
-  },
-  {
-    path: "/login",
-    name: "Login",
-    component: () =>
-      import(/* webpackChunkName: "login" */ "../views/LoginView.vue"),
-  },
-  {
-    path: "/registration",
-    name: "Registration",
-    component: () =>
-      import(
-        /* webpackChunkName: "registration" */ "../views/RegistrationView.vue"
-      ),
+    component: () => import("../layouts/DefaultLayout.vue"),
+    children: [
+      {
+        path: "login",
+        name: "login",
+        component: () => import("../views/LoginView.vue"),
+      },
+      {
+        path: "registration",
+        name: "Registration",
+        component: () => import("../views/RegistrationView.vue"),
+      },
+    ],
   },
 ];
 
