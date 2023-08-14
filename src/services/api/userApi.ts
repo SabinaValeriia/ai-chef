@@ -1,14 +1,16 @@
-import axiosClient from "./index";
-import { AxiosResponse } from "axios";
+import {
+  AuthUserInterface,
+  CreateUserInterface,
+} from "@/types/userApiInterface";
+import ApiService from "../api";
 
-export default {
-  login(payload: { password: string; login: string }): Promise<AxiosResponse> {
-    return axiosClient.post("auth/sign-in", payload);
+const userApi = {
+  registerUser(userData: CreateUserInterface) {
+    return ApiService.post("auth/local/register", userData);
   },
-  signUp(properties: Record<string, string>): Promise<AxiosResponse> {
-    return axiosClient.post("/auth/sign-up", properties);
-  },
-  getMe(): Promise<AxiosResponse> {
-    return axiosClient.get("users/me");
+  loginUser(userData: AuthUserInterface) {
+    return ApiService.post("auth/local", userData);
   },
 };
+
+export default userApi;

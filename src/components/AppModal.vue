@@ -1,23 +1,23 @@
 <template lang="pug">
 teleport(to="body")
-  transition(name="fade")
-    .modal(v-if="isOpen")
-      .modal--backdrop(@click="close")
-      .modal--container
-        .modal--wrapper
-          .modal--close(@click="close")
-          slot(name="content")
+  .modal
+    .modal--backdrop(@click="close")
+    .modal--container
+      .modal--wrapper
+        .modal--close(@click="close")
+        slot(name="content")
 </template>
 
 <script lang="ts" setup>
-import { defineEmits, defineProps, onBeforeUnmount } from "vue";
+import { defineEmits, defineProps, inject, onBeforeUnmount } from "vue";
 import useDisableScroll from "@/features/useDisableScroll";
 
 const emit = defineEmits(["close", "submit"]);
 const props = defineProps({
   isOpen: { type: Boolean, default: false },
 });
-
+let openWindow = inject("openWindow");
+console.log(openWindow);
 function close() {
   emit("close");
 }
@@ -60,7 +60,7 @@ onBeforeUnmount(() => {
   &--container {
     max-height: 100%;
     overflow-y: auto;
-    padding: 10px;
+    padding: 60px;
     z-index: 11;
   }
 
@@ -68,7 +68,7 @@ onBeforeUnmount(() => {
     position: relative;
     background-color: #ffffff;
     border-radius: 12px;
-    padding: 10px;
+    padding: 36px;
   }
 
   &--close {
