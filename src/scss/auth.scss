@@ -1,12 +1,4 @@
 .auth {
-    .close {
-        background: url("../assets/img/close.png");
-        position: absolute;
-        top: -68px;
-        left: 420px;
-        width: 35px;
-        height: 35px;
-    }
     h1 {
         font-family: var(--font-inter);
         font-size: 32px;
@@ -15,6 +7,7 @@
         letter-spacing: 0em;
         text-align: center;
         color: #020203;
+        padding: 36px 0 30px 0;
         margin: 0;
     }
     h2 {
@@ -28,7 +21,8 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-bottom: 30px;
+        padding: 30px 0;
+        margin: 0;
         &::after {
             content: "";
             border-top: 1px solid #020203;
@@ -55,14 +49,13 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 30px auto;
-
         color: #f7f5fa;
         font-family: var(--font-inter);
         font-size: 14px;
         font-style: normal;
         font-weight: 600;
         line-height: 20px;
+        cursor: pointer;
     }
     .sign-up {
         background: transparent;
@@ -79,19 +72,17 @@
         &::before {
             content: "";
             display: inline-block;
-            background: url("../assets/img/google.png");
+            background: url("../assets/img/google.svg");
             width: 16px;
             height: 16px;
             margin-right: 8px;
         }
     }
-    .log-in {
-        margin-top: 38px;
-    }
     .block {
         display: flex;
         align-items: center;
         justify-content: center;
+        padding: 16px 0 36px;
         p {
             color: #020203;
             font-family: var(--font-inter);
@@ -99,6 +90,7 @@
             font-style: normal;
             font-weight: 400;
             line-height: 20px;
+            margin: 0;
         }
     }
     form {
@@ -119,12 +111,20 @@
             background: #fff;
             padding: 14px 16px;
             outline: none;
-            margin-bottom: 8px;
+            &::placeholder {
+                font-family: var(--font-inter);
+                font-size: 14px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 20px;
+                color: #787878;
+            }
         }
         .form-group {
             display: flex;
             flex-direction: column;
             position: relative;
+            padding-bottom: 24px;
             &.error {
                 span {
                     color: red;
@@ -133,9 +133,12 @@
                     border: 1px solid red;
                 }
             }
+            &.distance {
+                padding-bottom: 46px;
+            }
         }
         .password-toggle {
-            background: url("../assets/img/visible.png");
+            background: url("../assets/img/visible.svg");
             display: block;
             position: absolute;
             top: 39px;
