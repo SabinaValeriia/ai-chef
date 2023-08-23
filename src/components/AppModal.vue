@@ -67,15 +67,18 @@ onBeforeUnmount(() => {
   &--wrapper {
     position: relative;
     background-color: #ffffff;
-    border-radius: 12px;
-    padding: 36px;
+    border-radius: 28px;
+    padding: 0 93px;
   }
 
   &--close {
     position: absolute;
-    top: 24px;
-    right: 24px;
+    top: -36px;
+    right: -40px;
     z-index: 9;
+    background: url("../assets/img/close.svg");
+    width: 36px;
+    height: 36px;
   }
 
   &--loader {

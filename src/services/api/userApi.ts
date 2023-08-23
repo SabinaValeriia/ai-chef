@@ -11,6 +11,12 @@ const userApi = {
   loginUser(userData: AuthUserInterface) {
     return ApiService.post("auth/local", userData);
   },
+  showUsers(headers: any) {
+    return ApiService.get("users/me?populate=*", headers);
+  },
+  updateUser(usersId: number, usersData: string, headers?: any) {
+    return ApiService.put(`users/${usersId}`, usersData, headers);
+  },
 };
 
 export default userApi;

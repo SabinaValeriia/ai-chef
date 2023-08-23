@@ -1,8 +1,12 @@
 @import "normalize";
 @import "font";
+@import "colors";
 
-html, body, #app {
+html,
+body,
+#app {
   height: 100%;
+  background: #F7F5FA;
 }
 
 body.no-scroll {
@@ -12,4 +16,109 @@ body.no-scroll {
 .container {
   max-width: 1024px;
   margin: 0 auto;
+}
+
+.icon {
+  display: flex;
+  width: 25px;
+  height: 25px;
+
+  background-color: #7f4a87;
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+
+  &-comments {
+    mask-image: url("@/assets/img/comments.svg");
+  }
+
+  &-account {
+    mask-image: url("@/assets/img/union.svg");
+  }
+
+  &-logo {
+    mask-image: url("@/assets/img/logo.svg");
+    width: 122px;
+    height: 38px;
+  }
+  &-logo-green {
+    background-color: #364f6b;
+  }
+
+  &-inform {
+    // mask-image: url("@/assets/image/inform.svg");
+  }
+  &-settings {
+    // mask-image: url("@/assets/image/settings.svg");
+  }
+  &-time-repeat {
+    // mask-image: url("@/assets/image/time-repeat.svg");
+  }
+  &-pen {
+    // mask-image: url("@/assets/image/pen.svg");
+  }
+  &-trash {
+    // mask-image: url("@/assets/image/trash.svg");
+  }
+  &-arrow {
+    mask-image: url("@/assets/img/arrow-left.svg");
+  }
+  &-calculator {
+    // mask-image: url("@/assets/image/calculator.svg");
+  }
+  &-import {
+    // mask-image: url("@/assets/image/import.svg");
+  }
+  &-visible {
+    // mask-image: url("@/assets/image/visible.svg");
+  }
+  &-arrow-long {
+    // mask-image: url("@/assets/image/arrow-long.svg");
+  }
+  &-arrow-red {
+    background-color: var(--red);
+  }
+  &-arrow-grey {
+    background-color: var(--grey-content);
+  }
+  &-arrow-green {
+    background-color: var(--green);
+  }
+  &-arrow-up {
+    transform: rotate(180deg);
+  }
+  &-tag {
+    // mask-image: url("@/assets/image/sidebar/tag.svg");
+  }
+}
+
+.btn-green {
+  display: flex;
+  width: 101px;
+  padding: 10px 20px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  border: none;
+  background: var(--secondary-bc-1);
+  color: var(--secondary-bt-1);
+  font-family: var(--font-inter);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.btn-purple {
+  width: 115px;
+  height: 44px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  color: var(--default-bc-1);
+  font-family: var(--font-inter);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+  background: var(--default-c-1);
+  border: none;
 }
