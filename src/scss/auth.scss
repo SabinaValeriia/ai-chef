@@ -111,6 +111,11 @@
             background: #fff;
             padding: 14px 16px;
             outline: none;
+            font-family: var(--font-inter);
+                font-size: 14px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 20px;
             &::placeholder {
                 font-family: var(--font-inter);
                 font-size: 14px;

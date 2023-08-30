@@ -8,22 +8,27 @@ header-component
     .profile--details-block
       .image-container(@click="triggerImageSelection")
         .image-block
-          img.profile-image(:src="imageSource", v-if="defaultImage")
+          img.profile-image(
+            v-if="defaultImage",
+            alt="Profile image",
+            :src="imageSource"
+          )
           input(
-            type="file",
             ref="fileInput",
+            type="file",
             style="display: none",
             @change="handleFileChange"
           )
-        img(:src="require(`../assets/img/${imagePath}`)", v-if="isImage")
-        button.btn-green(@click="logOut") Log out
+        img(
+          v-if="isImage",
+          :src="require(`../assets/img/${auth.img}`)",
+          alt="Profile image"
+        )
+        button.btn-green(@click="logOut") Log out {{ getDefaultPathFromStore }}
       .distance
-        h1 {{ name }}
+        h1 {{ auth.name }}
         h3 Tell us about yourself here
-        h2(
-          v-if="users.city || users.adress || users.adress || users.dateOfBirth || (users.city && users.adress && users.adress && users.dateOfBirth)"
-        ) {{ users.gender.gender }}, {{ age }} | {{ users.country }}, {{ users.city }}
-        h2(v-else) Age | City, State, country
+        h2 {{ auth.age }} | {{ auth.country }}, {{ auth.city }}, {{ auth.adress }}
   router-view(:file="file")
 </template>
 
@@ -31,6 +36,7 @@ header-component
 import HeaderComponent from "@/components/HeaderComponent.vue";
 import router from "@/router";
 import userApi from "@/services/api/userApi";
+import { useAuthStore } from "@/store/auth";
 import { computed, provide } from "vue";
 import { onMounted, ref } from "vue";
 const isAuthenticated = ref(false);
@@ -44,14 +50,14 @@ const logOut = () => {
 };
 
 const imagePath = ref("");
-const defaultPath = ref("");
 const fileInput = ref(null);
 
 const imageSource = computed(() => {
-  if (users.value.img && users.value.img) {
-    return require(`../assets/img/${defaultPath.value}`);
+  if (auth.img) {
+    return require(`../assets/img/${auth.img}`);
+  } else {
+    return null;
   }
-  return null;
 });
 
 const isImage = ref(false);
@@ -69,34 +75,10 @@ const handleFileChange = (event) => {
   defaultImage.value = false;
   console.log("res", imagePath.value);
 };
-console.log(file);
 
-const name = computed(() => {
-  if (users.value.name && users.value.surname) {
-    return users.value.name + " " + users.value.surname;
-  } else {
-    return users.value.username;
-  }
-});
-const age = computed(() => {
-  const birthdate = users.value.dateOfBirth;
-  const birthYear = new Date(birthdate).getFullYear();
-  const currentYear = new Date().getFullYear();
+const auth = useAuthStore();
 
-  return currentYear - birthYear;
-});
-
-isAuthenticated.value = true;
-const jwtToken = localStorage.getItem("isAuthenticated");
-const headers = {
-  headers: {
-    Authorization: `Bearer ${jwtToken}`,
-  },
-};
-userApi.showUsers(headers).then((res) => {
-  users.value = res.data;
-  defaultPath.value = users.value.img.name;
-});
+auth.showUser();
 </script>
 
 <style lang="scss">

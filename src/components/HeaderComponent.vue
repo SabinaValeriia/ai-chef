@@ -1,34 +1,37 @@
 <template lang="pug">
-div(v-if="isAuthenticated")
-  .container 
+div(v-if="auth.isAuthenticated")
+  .container
     .header
       .icon.icon-logo.icon-logo-green
       .header--buttons
         button.create-acc Create dish
         button.transparent-btn
-          .icon.icon-comments 
+          .icon.icon-comments
           a Comments
         button.transparent-btn
-          .icon.icon-account 
-          router-link(:to="{ name: 'details' }") {{ name }}
+          .icon.icon-account
+          router-link(:to="{ name: 'details' }") {{ auth.name }}
 div(v-else)
-  .container 
+  .container
     .header
       .icon.icon-logo
-      .header--buttons 
+      .header--buttons
         button.sign-in(@click="openSign") Sign In
         button.create-acc(@click="openRegistr") Create account
-  auth-modal(v-if="opensSign", @close="close", @isAuth="isAuth")
+  auth-modal(v-if="opensSign", @close="close")
   register-modal(v-if="opensRegister", @close="close")
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted, computed } from "vue";
+import { useAuthStore } from "@/store/auth";
 import userApi from "@/services/api/userApi";
-import { setToken, getToken } from "@/services/api/userApi";
-import AuthModal from "./AuthModal.vue";
-import RegisterModal from "./RegisterModal.vue";
-import { provide, ref, onMounted } from "vue";
-import { computed } from "vue";
+import AuthModal from "@/modals/AuthModal.vue";
+import RegisterModal from "@/modals/RegisterModal.vue";
+
+const auth = useAuthStore();
+auth.showUser();
+
 const opensSign = ref(false);
 const openSign = () => {
   opensSign.value = true;
@@ -41,31 +44,6 @@ const close = () => {
   opensSign.value = false;
   opensRegister.value = false;
 };
-const isAuthenticated = ref(false);
-onMounted(() => {
-  if (localStorage.getItem("isAuthenticated")) {
-    isAuthenticated.value = true;
-    const jwtToken = localStorage.getItem("isAuthenticated");
-    const headers = {
-      headers: {
-        Authorization: `Bearer ${jwtToken}`,
-      },
-    };
-    userApi.showUsers(headers).then((res) => {
-      users.value = res.data;
-    });
-  } else {
-    isAuthenticated.value = false;
-  }
-});
-const name = computed(() => {
-  if (users.value.name && users.value.surname) {
-    return users.value.name + " " + users.value.surname;
-  } else {
-    return users.value.username;
-  }
-});
-const users = ref({});
 </script>
 
 <style lang="scss">

@@ -1,8 +1,23 @@
 import axios, { AxiosRequestConfig } from "axios";
+import { ref } from "vue";
+
+const isAuthenticated = ref(false);
+
+function getJwtToken(): any {
+  if (isAuthenticated.value) {
+    const jwt = localStorage.getItem("isAuthenticated");
+    return jwt;
+  } else {
+    return "";
+  }
+}
 
 const axiosInstance = axios.create({
   baseURL: "http://localhost:1337/api",
   timeout: 1000,
+  headers: {
+    Authorization: `Bearer ${getJwtToken()}`,
+  },
 });
 
 const ApiService = {

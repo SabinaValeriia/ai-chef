@@ -2,29 +2,20 @@
 app-modal(@close="close")
   template(#content)
     .auth
-      h1 Create Account
+      h1 Log In
       button.google Sign up with Google
       h2 Or continue with
       form(@submit.prevent="submit")
-        .form-group(:class="getValidationClass($v, 'username')") 
-          label(for="username") Name
-          input#InputName(
-            v-model="form.username",
-            placeholder="Type your username",
-            type="username",
-            @blur="$v.username.$touch()"
-          )
-          span(v-if="$v.username.$dirty && $v.username.required.$invalid") This field is required.
-        .form-group(:class="getValidationClass($v, 'email')")
+        .form-group(:class="getValidationClass($v, 'identifier')")
           label(for="email") Email Adress
           input#InputEmail(
-            v-model="form.email",
+            v-model="form.identifier",
             placeholder="Type your email address",
             type="email",
-            @blur="$v.email.$touch()"
+            @blur="$v.identifier.$touch()"
           )
-          span(v-if="$v.email.$dirty && $v.email.required.$invalid") This field is required.
-          span(v-else-if="$v.email.$dirty && $v.email.email.$invalid") Please enter a valid email address.
+          span(v-if="$v.identifier.required.$invalid") This field is required.
+          span(v-else-if="$v.identifier.email.$invalid") Please enter a valid email address.
         .form-group.distance(:class="getValidationClass($v, 'password')")
           label(for="password") Password
           input#password(
@@ -35,16 +26,12 @@ app-modal(@close="close")
           )
           span.password-toggle(@click="passwordVisible = !passwordVisible") 
             i(:class="[passwordVisible ? 'password-show' : 'password-hide']") 
-          span.error-message(
-            v-if="$v.password.$dirty && $v.password.required.$invalid"
-          ) This field is required.
-          span.error-message(
-            v-else-if="$v.password.$dirty && $v.password.minLength.$invalid"
-          ) Password must be at least 8 characters long.
-        button.log-in Sign Up
-        .block 
-          p New User?
-          button.sign-up(@click="signUp") Sign Up
+          span.error-message(v-if="$v.password.required.$invalid") This field is required.
+          span.error-message(v-else-if="$v.password.minLength.$invalid") Password must be at least 8 characters long.
+        button.log-in Log In
+      .block 
+        p New User?
+        button.sign-up(@click="signUp") Sign Up
 </template>
 
 <script setup lang="ts">
@@ -62,28 +49,29 @@ import {
 } from "@/types/userApiInterface";
 import userApi from "@/services/api/userApi";
 const passwordVisible = ref(false);
-interface RegistrationData {
-  username: string;
-  email: string;
+const registration = ref(false);
+const emit = defineEmits(["close", "isAuth"]);
+const signUp = () => {
+  emit("close");
+};
+interface LoginData {
+  identifier: string;
   password: string;
-  role: string;
 }
 
-const defaultStateRegister: RegistrationData = {
-  username: "",
-  email: "",
-  password: "",
-  role: "Authentication",
+const defaultState: LoginData = {
+  identifier: "valeriia@gmail.com",
+  password: "Sa111111",
 };
 
-const form = ref<RegistrationData>({
-  ...defaultStateRegister,
+const form = ref<LoginData>({
+  ...defaultState,
 });
+
 const rules = computed(() => {
   const rules: any = {
-    email: { required, email },
+    identifier: { required, email },
     password: { required, minLength: minLength(8) },
-    username: { required },
   };
   return rules;
 });
@@ -91,25 +79,24 @@ const rules = computed(() => {
 const $v = useVuelidate(rules, form);
 
 const submit = async () => {
+  console.log(9);
   if (checkValidation($v.value)) {
     return;
   }
-  userApi
-    .registerUser(form.value)
-    .then((res: AxiosResponse<{ data: ResUser }>) => {
-      if (res) {
-        console.log(res);
-        close();
-      }
-    });
+  userApi.loginUser(form.value).then((res) => {
+    if (res) {
+      const authToken = res.data.jwt;
+      localStorage.setItem("isAuthenticated", authToken);
+      console.log(res);
+      emit("isAuth");
+      close();
+      window.location.reload();
+    }
+  });
 };
 const close = () => {
   emit("close");
 };
-const emit = defineEmits(["close"]);
-// onMounted(() => {
-//   localStorage.removeItem("isAuthenticated");
-// });
 </script>
 
 <style lang="scss">

@@ -122,3 +122,16 @@ body.no-scroll {
   background: var(--default-c-1);
   border: none;
 }
+
+.form-group {
+  span {
+     display: none;
+  }
+  &.error {
+    span {
+      display: block;
+      margin-top: 5px;
+      font-family: var(--font-inter);
+   }
+  }
+}
