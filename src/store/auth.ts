@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import userApi from "@/services/api/userApi";
+import { showUsers } from "@/services/api/userApi";
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
@@ -43,7 +43,7 @@ export const useAuthStore = defineStore("auth", {
           },
         };
 
-        userApi.showUsers(headers).then((res: { data: any }) => {
+        showUsers(headers).then((res: { data: any }) => {
           this.users = res.data;
           console.log(this.users);
         });

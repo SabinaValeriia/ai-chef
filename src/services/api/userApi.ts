@@ -3,22 +3,24 @@ import {
   CreateUserInterface,
   ResUser,
 } from "@/types/userApiInterface";
-import ApiService from "../api";
+import { axiosInstance } from "../api";
 import { AxiosResponse } from "axios";
 
-const userApi = {
-  registerUser(userData: CreateUserInterface) {
-    return ApiService.post("auth/local/register", userData);
-  },
-  loginUser(userData: AuthUserInterface) {
-    return ApiService.post("auth/local", userData);
-  },
-  showUsers(headers: object): Promise<AxiosResponse<{ data: ResUser }>> {
-    return ApiService.get("users/me?populate=*", headers);
-  },
-  updateUser(usersId: number, usersData: string, headers?: object) {
-    return ApiService.put(`users/${usersId}`, usersData, headers);
-  },
+export const registerUser = (userData: CreateUserInterface) => {
+  return axiosInstance.post("auth/local/register", userData);
 };
-
-export default userApi;
+export const loginUser = (userData: AuthUserInterface) => {
+  return axiosInstance.post("auth/local", userData);
+};
+export const showUsers = (
+  headers: object
+): Promise<AxiosResponse<{ data: ResUser }>> => {
+  return axiosInstance.get("users/me?populate=*", headers);
+};
+export const updateUser = (
+  usersId: number,
+  usersData: string,
+  headers?: object
+) => {
+  return axiosInstance.put(`users/${usersId}`, usersData, headers);
+};

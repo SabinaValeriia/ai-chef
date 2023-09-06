@@ -12,7 +12,7 @@ function getJwtToken(): any {
   }
 }
 
-const axiosInstance = axios.create({
+export const axiosInstance = axios.create({
   baseURL: "http://localhost:1337/api",
   timeout: 1000,
   headers: {
@@ -20,22 +20,22 @@ const axiosInstance = axios.create({
   },
 });
 
-const ApiService = {
-  get(resource: any, config?: AxiosRequestConfig) {
-    return axiosInstance.get(resource, config);
-  },
-
-  post(resource: any, data?: any, config?: AxiosRequestConfig) {
-    return axiosInstance.post(resource, data, config);
-  },
-
-  put(resource: any, data: any, config?: AxiosRequestConfig) {
-    return axiosInstance.put(resource, data, config);
-  },
-
-  delete(resource: any, config?: AxiosRequestConfig) {
-    return axiosInstance.delete(resource, config);
-  },
+export const get = (resource: any, config?: AxiosRequestConfig) => {
+  return axiosInstance.get(resource, config);
 };
 
-export default ApiService;
+export const post = (
+  resource: any,
+  data?: any,
+  config?: AxiosRequestConfig
+) => {
+  return axiosInstance.post(resource, data, config);
+};
+
+export const put = (resource: any, data: any, config?: AxiosRequestConfig) => {
+  return axiosInstance.put(resource, data, config);
+};
+
+export const deleted = (resource: any, config?: AxiosRequestConfig) => {
+  return axiosInstance.delete(resource, config);
+};

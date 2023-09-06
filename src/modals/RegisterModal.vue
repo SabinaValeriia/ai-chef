@@ -38,6 +38,7 @@ app-modal(@close="close")
           span.error-message(v-if="$v.password.required.$invalid") This field is required.
           span.error-message(v-else-if="$v.password.minLength.$invalid") Password must be at least 8 characters long.
         button.log-in Sign Up
+          i.loader(v-if="isLoading")
         .block 
           p New User?
           button.sign-up(@click="signUp") Sign Up
@@ -56,8 +57,9 @@ import {
   CreateUserInterface,
   ResUser,
 } from "@/types/userApiInterface";
-import userApi from "@/services/api/userApi";
+import userApi, { registerUser } from "@/services/api/userApi";
 const passwordVisible = ref(false);
+const isLoading = ref(false);
 interface RegistrationData {
   username: string;
   email: string;
@@ -87,17 +89,18 @@ const rules = computed(() => {
 const $v = useVuelidate(rules, form);
 
 const submit = async () => {
+  isLoading.value = true;
   if (checkValidation($v.value)) {
+    isLoading.value = false;
     return;
   }
-  userApi
-    .registerUser(form.value)
-    .then((res: AxiosResponse<{ data: ResUser }>) => {
-      if (res) {
-        console.log(res);
-        close();
-      }
-    });
+  registerUser(form.value).then((res: AxiosResponse<{ data: ResUser }>) => {
+    isLoading.value = false;
+    if (res) {
+      console.log(res);
+      close();
+    }
+  });
 };
 const close = () => {
   emit("close");

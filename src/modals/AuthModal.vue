@@ -29,6 +29,7 @@ app-modal(@close="close")
           span.error-message(v-if="$v.password.required.$invalid") This field is required.
           span.error-message(v-else-if="$v.password.minLength.$invalid") Password must be at least 8 characters long.
         button.log-in Log In
+          i.loader(v-if="isLoading")
       .block 
         p New User?
         button.sign-up(@click="signUp") Sign Up
@@ -47,10 +48,11 @@ import {
   CreateUserInterface,
   ResUser,
 } from "@/types/userApiInterface";
-import userApi from "@/services/api/userApi";
+import userApi, { loginUser } from "@/services/api/userApi";
 const passwordVisible = ref(false);
 const registration = ref(false);
 const emit = defineEmits(["close", "isAuth"]);
+const isLoading = ref(false);
 const signUp = () => {
   emit("close");
 };
@@ -78,12 +80,14 @@ const rules = computed(() => {
 
 const $v = useVuelidate(rules, form);
 
-const submit = async () => {
-  console.log(9);
+const submit = () => {
+  isLoading.value = true;
   if (checkValidation($v.value)) {
+    isLoading.value = false;
     return;
   }
-  userApi.loginUser(form.value).then((res) => {
+  loginUser(form.value).then((res) => {
+    isLoading.value = false;
     if (res) {
       const authToken = res.data.jwt;
       localStorage.setItem("isAuthenticated", authToken);

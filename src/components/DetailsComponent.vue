@@ -133,7 +133,7 @@ import {
   CreateUserInterface,
   ResUser,
 } from "@/types/userApiInterface";
-import userApi from "@/services/api/userApi";
+import userApi, { updateUser } from "@/services/api/userApi";
 import CustomDropdown from "@/components/CustomDropdown.vue";
 import { useAuthStore } from "@/store/auth";
 const passwordVisible = ref(false);
@@ -276,8 +276,8 @@ const save = () => {
     },
   };
   console.log("image", data.img);
-  userApi
-    .updateUser(auth.id, data)
+
+  updateUser(auth.id, data)
     .then((res) => {
       console.log("res", res);
       window.location.reload();
